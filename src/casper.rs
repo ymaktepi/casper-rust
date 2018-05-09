@@ -37,7 +37,9 @@ impl<'a> Hash for Message<'a>{
 }
 
 fn score<'a>(block: &'a Message<'a>, justification: &HashSet<&'a Message<'a>>, validators_weights: &HashMap<Validator, Weight>) -> f64{
-    0 as f64
+    validators_weights.keys()
+        .
+
 }
 
 /// Estimates the next block
@@ -45,6 +47,16 @@ fn score<'a>(block: &'a Message<'a>, justification: &HashSet<&'a Message<'a>>, v
 fn estimator<'a>(justification: &HashSet<&'a Message<'a>>, genesis_block: &'a Message<'a>, validators_weights: &HashMap<Validator, Weight>)-> Option<&'a Message<'a>>{
     let mut b: &'a Message<'a> = genesis_block;
     let mut b_id: i64 = b.id;
+
+    let mut last_message_per_validator = HashMap::new();
+
+    for validator in validators_weights.keys(){
+        let last_messages = justification.iter().filter(
+            |m|
+            m.sender == validator
+            );
+    }
+
     loop {
         let b_id_cmp = b_id;
         let b_children = justification.iter().filter(
@@ -96,9 +108,3 @@ impl<'a> Message<'a>{
         Message{ sender, justification, estimate, id}
     }
 }
-#[allow(dead_code)]
-fn get_latest_message_from_validator<'a>(justification: HashSet<&'a Message <'a>>, validator: Validator) -> Option<& Message<'a>> {
-    justification.iter().filter(|m| m.sender == validator).map(|m|*m).next()
-}
-
-
