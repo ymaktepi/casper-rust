@@ -1,5 +1,6 @@
 use std::collections::{HashSet, HashMap};
 use std::hash::{Hash, Hasher};
+use std::fmt;
 
 
 /// A validator ID
@@ -62,6 +63,14 @@ impl<'a> Hash for Message<'a>{
         self.id.hash(state);
     }
 }
+
+impl<'a> fmt::Display for Message<'a>{
+   fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        write!(fmt, "Message id: {}, sender: {}, estimate: {:?}", self.id, self.sender, self.estimate )?;
+        Ok(())
+    }
+}
+
 
 /// computes the score of a message
 /// param block: the block to compute the score for
