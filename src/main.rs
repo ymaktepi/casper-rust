@@ -23,7 +23,7 @@ fn main() {
     validator_weights.insert(validator4, 1.0);
 
     // create a genesis message
-    let genesis_block:Message = Message::genesis(id_iterator.next().unwrap());
+    let genesis_block:Message = Message::genesis(&mut id_iterator);
     
     println!("Genesis Message: {:#?}", genesis_block);
     
@@ -33,7 +33,7 @@ fn main() {
         validator1, 
         j1, 
         &genesis_block, 
-        id_iterator.next().unwrap(), 
+        &mut id_iterator, 
         &validator_weights);
 
     println!("Message 1: {:#?}", m1);
@@ -46,7 +46,7 @@ fn main() {
         validator2,
         j2,  
         &genesis_block, 
-        id_iterator.next().unwrap(), 
+        &mut id_iterator, 
         &validator_weights);
 
     println!("Message 2: {:#?}", m2);
@@ -60,7 +60,7 @@ fn main() {
         validator3,
         j3,
         &genesis_block, 
-        id_iterator.next().unwrap(), 
+        &mut id_iterator, 
         &validator_weights);
     
     println!("Message 3: {:#?}", m3);
@@ -75,12 +75,11 @@ fn main() {
         validator4,
         j4, 
         &genesis_block, 
-        id_iterator.next().unwrap(), 
+        &mut id_iterator, 
         &validator_weights);
 
     println!("Message 4: {:#?}", m4);
 }
-
 
 // practicing iterators...
 fn interator(start:i64) -> It

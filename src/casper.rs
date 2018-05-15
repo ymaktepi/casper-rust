@@ -7,6 +7,7 @@ pub type Weight = f64;
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct Message<'a>{
+    // id is here for uniqueness, comparison, and ordering 
     id: i64,
     sender: Validator,
     estimate: Option<&'a Message<'a>>,
@@ -16,14 +17,23 @@ pub struct Message<'a>{
 impl<'a> Message<'a>{
 
     /// Sender id 0 is taken for the genesis block
-    pub fn genesis(id: i64)-> Message<'a>
+    pub fn genesis<I>(id: &mut I)-> Message<'a>
+        where I: Iterator<Item=i64>
     {
         Message{
             sender:0,
             estimate: None,
             justification: HashSet::new(),
-            id: id, // id is here for uniqueness, comparison, and ordering 
+            id: id.next().unwrap(),
         }
+    }
+    
+    /// builds a message using the justification and a sender
+    pub fn build_message<I>(sender:Validator, justification: HashSet<&'a Message<'a>>, genesis_block: &'a Message<'a>, id: &mut I, validators_weights: &HashMap<Validator, Weight>) -> Message<'a>
+        where I: Iterator<Item=i64>
+    {
+        let estimate = estimator(&justification, genesis_block, validators_weights);
+        Message{ sender, justification, estimate, id: id.next().unwrap()}
     }
 }
 
@@ -129,11 +139,3 @@ fn estimator<'a>(justification: &HashSet<&'a Message<'a>>, genesis_block: &'a Me
     Some(b)
 }
 
-impl<'a> Message<'a>{
-    /// builds a message using the justification and a sender
-    pub fn build_message(sender:Validator, justification: HashSet<&'a Message<'a>>, genesis_block: &'a Message<'a>, id: i64, validators_weights: &HashMap<Validator, Weight>) -> Message<'a>
-    {
-        let estimate = estimator(&justification, genesis_block, validators_weights);
-        Message{ sender, justification, estimate, id}
-    }
-}
