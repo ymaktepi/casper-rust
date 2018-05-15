@@ -8,9 +8,6 @@ fn main() {
     // allows us to give ids to messages for ordering
     let mut id_iterator = interator(0);
 
-    //ugly for now, but I gotta start somewhere
-    let genesis_block:Message = Message::genesis(id_iterator.next().unwrap());
-    
     // maps validators to their respective weights
     // note: validator 0 is used to "send" the genesis block
     let mut validator_weights: HashMap<Validator, Weight> = HashMap::new();
@@ -20,25 +17,68 @@ fn main() {
     let validator3: Validator = 3;
     let validator4: Validator = 4;
 
-    validator_weights.insert(validator1, 10.0);
-    validator_weights.insert(validator2, 11.0);
-    validator_weights.insert(validator3, 9.0);
-    validator_weights.insert(validator4, 8.0);
+    validator_weights.insert(validator1, 1.0);
+    validator_weights.insert(validator2, 1.0);
+    validator_weights.insert(validator3, 1.0);
+    validator_weights.insert(validator4, 1.0);
 
-    println!("Genesis Message{:#?}", genesis_block);
+    // create a genesis message
+    let genesis_block:Message = Message::genesis(id_iterator.next().unwrap());
+    
+    println!("Genesis Message: {:#?}", genesis_block);
     
     let mut j1: HashSet<& Message> = HashSet::new();
     j1.insert(&genesis_block);
-    let m1: Message = Message::build_message(validator1,j1,  &genesis_block, id_iterator.next().unwrap(), &validator_weights);
+    let m1: Message = Message::build_message(
+        validator1, 
+        j1, 
+        &genesis_block, 
+        id_iterator.next().unwrap(), 
+        &validator_weights);
 
-    println!("Message 1 {:#?}", m1);
+    println!("Message 1: {:#?}", m1);
     
     let mut j2: HashSet<& Message> = HashSet::new();
     j2.insert(&genesis_block);
     j2.insert(&m1);
-    let m2: Message = Message::build_message(validator2,j2,  &genesis_block, id_iterator.next().unwrap(), &validator_weights);
 
-    println!("Message 2 {:#?}", m2);
+    let m2: Message = Message::build_message(
+        validator2,
+        j2,  
+        &genesis_block, 
+        id_iterator.next().unwrap(), 
+        &validator_weights);
+
+    println!("Message 2: {:#?}", m2);
+    
+    let mut j3: HashSet<& Message> = HashSet::new();
+    j3.insert(&genesis_block);
+//    j3.insert(&m1);
+//    j3.insert(&m2);
+    
+    let m3: Message = Message::build_message(
+        validator3,
+        j3,
+        &genesis_block, 
+        id_iterator.next().unwrap(), 
+        &validator_weights);
+    
+    println!("Message 3: {:#?}", m3);
+    
+    let mut j4: HashSet<& Message> = HashSet::new();
+    j4.insert(&genesis_block);
+    j4.insert(&m1);
+    j4.insert(&m2);
+    j4.insert(&m3);
+
+    let m4: Message = Message::build_message(
+        validator4,
+        j4, 
+        &genesis_block, 
+        id_iterator.next().unwrap(), 
+        &validator_weights);
+
+    println!("Message 4: {:#?}", m4);
 }
 
 
