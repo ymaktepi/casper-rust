@@ -20,7 +20,7 @@ fn main() {
     validator_weights.insert(validator1, 1.0);
     validator_weights.insert(validator2, 1.0);
 
-    // if you change the next weight to something > 3, the blockchain changes completely
+    // if you change the next weight to something > 2, the blockchain changes completely
     // even though the validator 3 only has the genesis block as a justification
     // and validator 4 has all the messages as justification
     validator_weights.insert(validator3, 1.0);
