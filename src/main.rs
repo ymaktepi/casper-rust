@@ -8,23 +8,25 @@ fn main() {
     // allows us to give ids to messages for ordering
     let mut id_iterator = interator(0);
 
-    // maps validators to their respective weights
-    // note: validator 0 is used to "send" the genesis block
-    let mut validator_weights: HashMap<Validator, Weight> = HashMap::new();
 
     let validator1: Validator = 1;
     let validator2: Validator = 2;
     let validator3: Validator = 3;
     let validator4: Validator = 4;
 
-    validator_weights.insert(validator1, 1.0);
-    validator_weights.insert(validator2, 1.0);
-
+    let validators_weights: Vec<(Validator, Weight)> = vec![
+        (validator1, 1.0),
+        (validator2, 1.0),
     // if you change the next weight to something > 2, the blockchain changes completely
     // even though the validator 3 only has the genesis block as a justification
     // and validator 4 has all the messages as justification
-    validator_weights.insert(validator3, 1.0);
-    validator_weights.insert(validator4, 1.0);
+        (validator3, 1.0),
+        (validator4, 1.0),
+    ];
+
+    // maps validators to their respective weights
+    // note: validator 0 is used to "send" the genesis block
+    let validators_weights: HashMap<_, _> = validators_weights.into_iter().collect();
 
     // create a genesis message
     let genesis_block:Message = Message::genesis(&mut id_iterator);
@@ -38,7 +40,7 @@ fn main() {
         j1, 
         &genesis_block, 
         &mut id_iterator, 
-        &validator_weights);
+        &validators_weights);
 
     println!("Message 1: {:#?}", m1);
     
@@ -51,7 +53,7 @@ fn main() {
         j2,  
         &genesis_block, 
         &mut id_iterator, 
-        &validator_weights);
+        &validators_weights);
 
     println!("Message 2: {:#?}", m2);
     
@@ -65,7 +67,7 @@ fn main() {
         j3,
         &genesis_block, 
         &mut id_iterator, 
-        &validator_weights);
+        &validators_weights);
     
     println!("Message 3: {:#?}", m3);
     
@@ -80,7 +82,7 @@ fn main() {
         j4, 
         &genesis_block, 
         &mut id_iterator, 
-        &validator_weights);
+        &validators_weights);
 
     println!("Message 4: {:#?}", m4);
 }
