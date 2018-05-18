@@ -13,13 +13,13 @@ pub type Weight = f64;
 /// Casper message
 #[derive(Debug, Eq, PartialEq)]
 pub struct Message<'a>{
-    /// id is here for uniqueness, comparison, and ordering 
+    /// id is here for uniqueness, comparison, and ordering
     id: i64,
     /// The validator that sent this message
     sender: Validator,
     /// The message that is estimated, or None if this message is the genesis block
     estimate: Option<&'a Message<'a>>,
-    /// The messages that the validator has received before 
+    /// The messages that the validator has received before
     justification: HashSet<&'a Message<'a>>,
 }
 
@@ -32,7 +32,7 @@ impl<'a> Message<'a>{
     {
         Message{
             sender:0,
-            // No estimate 
+            // No estimate
             estimate: None,
             // Justification is empty
             justification: HashSet::new(),
@@ -40,7 +40,7 @@ impl<'a> Message<'a>{
             id: id.next().unwrap(),
         }
     }
-    
+
     /// builds a message using the justification and a sender
     /// param sender: the validator who sent the message
     /// param justification: all the messages the validator has received
@@ -79,7 +79,7 @@ impl<'a> fmt::Display for Message<'a>{
 ///     justification)
 fn score<'a>(block: &'a Message<'a>, validators_weights: &HashMap<Validator, Weight>, latest_message_per_validator: &HashMap<Validator, &Message>) -> f64{
     let mut score: f64 = 0.0;
-   
+
     // for each validator, check if the last message is in the blockchain of "block"
     // if it's the case, add the weight of the validator to the score
     for  (validator, last_message) in latest_message_per_validator.iter(){
@@ -149,13 +149,13 @@ fn estimator<'a>(justification: &HashSet<&'a Message<'a>>, genesis_block: &'a Me
                 else
                 {
                     m.estimate.unwrap().id == b_id_cmp
-                }   
+                }
             });
 
         // get the score of each child
         let mut sorted_by_score_and_hash:Vec<_> = b_children
             .map(
-                |child| 
+                |child|
                     (child, score(child, validators_weights, &latest_message_per_validator))
                 )
             .collect();
@@ -173,7 +173,7 @@ fn estimator<'a>(justification: &HashSet<&'a Message<'a>>, genesis_block: &'a Me
 
         // if we have a next block, loop again
         if sorted_by_score_and_hash.len() > 0 {
-            b = sorted_by_score_and_hash[0].0; 
+            b = sorted_by_score_and_hash[0].0;
             b_id = b.id;
         }
         // no next block, we have our complete blockchain

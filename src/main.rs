@@ -1,10 +1,10 @@
-mod casper;
+extern crate casper;
 use casper::{Message, Validator, Weight};
 use std::collections::{HashMap, HashSet};
 
 
 fn main() {
-    
+
     // allows us to give ids to messages for ordering
     let mut id_iterator = interator(0);
 
@@ -30,47 +30,47 @@ fn main() {
 
     // create a genesis message
     let genesis_block:Message = Message::genesis(&mut id_iterator);
-    
+
     println!("Genesis Message: {:#?}", genesis_block);
-    
+
     let mut j1: HashSet<& Message> = HashSet::new();
     j1.insert(&genesis_block);
     let m1: Message = Message::build_message(
-        validator1, 
-        j1, 
-        &genesis_block, 
-        &mut id_iterator, 
+        validator1,
+        j1,
+        &genesis_block,
+        &mut id_iterator,
         &validators_weights);
 
     println!("Message 1: {:#?}", m1);
-    
+
     let mut j2: HashSet<& Message> = HashSet::new();
     j2.insert(&genesis_block);
     j2.insert(&m1);
 
     let m2: Message = Message::build_message(
         validator2,
-        j2,  
-        &genesis_block, 
-        &mut id_iterator, 
+        j2,
+        &genesis_block,
+        &mut id_iterator,
         &validators_weights);
 
     println!("Message 2: {:#?}", m2);
-    
+
     let mut j3: HashSet<& Message> = HashSet::new();
     j3.insert(&genesis_block);
 //    j3.insert(&m1);
 //    j3.insert(&m2);
-    
+
     let m3: Message = Message::build_message(
         validator3,
         j3,
-        &genesis_block, 
-        &mut id_iterator, 
+        &genesis_block,
+        &mut id_iterator,
         &validators_weights);
-    
+
     println!("Message 3: {:#?}", m3);
-    
+
     let mut j4: HashSet<& Message> = HashSet::new();
     j4.insert(&genesis_block);
     j4.insert(&m1);
@@ -79,9 +79,9 @@ fn main() {
 
     let m4: Message = Message::build_message(
         validator4,
-        j4, 
-        &genesis_block, 
-        &mut id_iterator, 
+        j4,
+        &genesis_block,
+        &mut id_iterator,
         &validators_weights);
 
     println!("Message 4: {:#?}", m4);

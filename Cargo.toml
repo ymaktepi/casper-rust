@@ -4,3 +4,12 @@ version = "0.1.0"
 authors = ["Nicolas Huguenin <nichuguen@gmail.com>"]
 
 [dependencies]
+
+
+[lib]
+name = "casper"
+path = "src/lib.rs"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
