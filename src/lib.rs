@@ -47,7 +47,7 @@ impl<'a> Message<'a>{
     /// param genesis_block: the gensesis_block
     /// param id: an iterator that has the next id
     /// param validators_weights: a mapping validator -> weight
-    pub fn build_message<I>(sender:Validator, justification: HashSet<&'a Message<'a>>, genesis_block: &'a Message<'a>, id: &mut I, validators_weights: &HashMap<Validator, Weight>) -> Message<'a>
+    pub fn new<I>(sender:Validator, justification: HashSet<&'a Message<'a>>, genesis_block: &'a Message<'a>, id: &mut I, validators_weights: &HashMap<Validator, Weight>) -> Message<'a>
         where I: Iterator<Item=i64>
     {
         let estimate = estimator(&justification, genesis_block, validators_weights);
@@ -70,7 +70,6 @@ impl<'a> fmt::Display for Message<'a>{
         Ok(())
     }
 }
-
 
 /// computes the score of a message
 /// param block: the block to compute the score for

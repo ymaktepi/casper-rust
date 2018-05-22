@@ -35,7 +35,7 @@ fn main() {
 
     let mut j1: HashSet<& Message> = HashSet::new();
     j1.insert(&genesis_block);
-    let m1: Message = Message::build_message(
+    let m1: Message = Message::new(
         validator1,
         j1,
         &genesis_block,
@@ -48,7 +48,7 @@ fn main() {
     j2.insert(&genesis_block);
     j2.insert(&m1);
 
-    let m2: Message = Message::build_message(
+    let m2: Message = Message::new(
         validator2,
         j2,
         &genesis_block,
@@ -62,7 +62,7 @@ fn main() {
 //    j3.insert(&m1);
 //    j3.insert(&m2);
 
-    let m3: Message = Message::build_message(
+    let m3: Message = Message::new(
         validator3,
         j3,
         &genesis_block,
@@ -77,7 +77,7 @@ fn main() {
     j4.insert(&m2);
     j4.insert(&m3);
 
-    let m4: Message = Message::build_message(
+    let m4: Message = Message::new(
         validator4,
         j4,
         &genesis_block,
