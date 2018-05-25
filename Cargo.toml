@@ -1,5 +1,5 @@
 [package]
-name = "casper"
+name = "tl_casper"
 version = "0.1.0"
 authors = ["Nicolas Huguenin <nichuguen@gmail.com>"]
 
@@ -7,7 +7,7 @@ authors = ["Nicolas Huguenin <nichuguen@gmail.com>"]
 
 
 [lib]
-name = "casper"
+name = "tl_casper"
 path = "src/lib.rs"
 
 [[bin]]

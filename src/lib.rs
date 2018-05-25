@@ -11,7 +11,7 @@ pub type Weight = f64;
 
 
 /// Casper message
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Eq, PartialEq)]
 pub struct Message<'a>{
     /// id is here for uniqueness, comparison, and ordering
     id: i64,
@@ -64,10 +64,28 @@ impl<'a> Hash for Message<'a>{
     }
 }
 
-impl<'a> fmt::Display for Message<'a>{
-   fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        write!(fmt, "Message id: {}, sender: {}, estimate: {:?}", self.id, self.sender, self.estimate )?;
-        Ok(())
+
+/// implementation of the Debug formatter trait.
+/// uncomment/comment the .field("justification"....) line according to the desired output
+impl<'a> fmt::Debug for Message<'a>{
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        match self.estimate {
+           Some(m) =>  
+                    fmt.debug_struct("Message")
+                        .field("id", &self.id)
+                        .field("sender", &self.sender)
+                        .field("estimate", &m)
+                        //.field("justification", &format_args!("{:#?}", &self.justification))
+                        .finish(),
+           None =>  
+                    fmt.debug_struct("Message")
+                        .field("id", &self.id)
+                        .field("sender", &self.sender)
+                        .field("estimate", &format!("-"))
+                        //.field("justification", &format_args!("{:#?}", &self.justification))
+                        .finish(),
+
+        }
     }
 }
 

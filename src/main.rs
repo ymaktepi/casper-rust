@@ -1,5 +1,5 @@
-extern crate casper;
-use casper::{Message, Validator, Weight};
+extern crate tl_casper;
+use tl_casper::{Message, Validator, Weight};
 use std::collections::{HashMap, HashSet};
 
 
